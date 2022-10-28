@@ -2,12 +2,35 @@ import unittest
 
 from ..Konto import Konto
 
+
 class TestCreateBankAccount(unittest.TestCase):
+    imie = "Dariusz"
+    nazwisko = "Januszewski"
+    pesel = "12345678912"
+    kod_rabatowy = "PROM_420"
 
     def test_tworzenie_konta(self):
-        pierwsze_konto = Konto("Dariusz", "Januszewski")
-        self.assertEqual(pierwsze_konto.imie, "Dariusz", "Imie nie zostało zapisane!")
-        self.assertEqual(pierwsze_konto.nazwisko, "Januszewski", "Nazwisko nie zostało zapisane!")
-        self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest zerowe!")
+        konto = Konto(self.imie, self.nazwisko, self.pesel)
+        self.assertEqual(konto.imie, self.imie, "Imie nie zostało zapisane!")
+        self.assertEqual(konto.nazwisko, self.nazwisko, "Nazwisko nie zostało zapisane!")
+        self.assertEqual(konto.saldo, 0, "Saldo nie jest zerowe!")
 
-    #tutaj proszę dodawać nowe testy
+    def test_pesel(self):
+        konto = Konto(self.imie, self.nazwisko, self.pesel)
+        self.assertEqual(konto.pesel, self.pesel, "Pesel nie zostal zapisany")
+
+    def test_kod_rabatowy_dobry(self):
+        konto = Konto(self.imie, self.nazwisko, self.pesel, self.kod_rabatowy)
+        self.assertEqual(konto.saldo, 50, "Saldo sie nie doladowalo, osoba jest urodzona przed 1960")
+
+    def test_kod_rabatowy_zly(self):
+        konto = Konto(self.imie, self.nazwisko, self.pesel, "POOM_000")
+        self.assertEqual(konto.saldo, 0, "Saldo sie zwiekszylo bez uzycia kodu")
+
+    def test_kod_rabatowy_brak(self):
+        konto = Konto(self.imie, self.nazwisko, self.pesel)
+        self.assertEqual(konto.saldo, 0, "Saldo sie zwiekszylo bez uzycia kodu")
+
+    def test_urodzone_po_1960(self):
+        konto = Konto(self.imie, self.nazwisko, "72345678912", self.kod_rabatowy)
+        self.assertEqual(konto.saldo, 50, "Kupon nie aktywowal sie dla osoby urodzonej po 1960")
