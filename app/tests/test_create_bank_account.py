@@ -1,12 +1,11 @@
 import unittest
-
 from ..Konto import Konto
 
 
 class TestCreateBankAccount(unittest.TestCase):
     imie = "Dariusz"
     nazwisko = "Januszewski"
-    pesel = "12345678912"
+    pesel = "72345678912"
     kod_rabatowy = "PROM_420"
 
     def test_tworzenie_konta(self):
@@ -32,5 +31,5 @@ class TestCreateBankAccount(unittest.TestCase):
         self.assertEqual(konto.saldo, 0, "Saldo sie zwiekszylo bez uzycia kodu")
 
     def test_urodzone_po_1960(self):
-        konto = Konto(self.imie, self.nazwisko, "72345678912", self.kod_rabatowy)
+        konto = Konto(self.imie, self.nazwisko, self.pesel, self.kod_rabatowy)
         self.assertEqual(konto.saldo, 50, "Kupon nie aktywowal sie dla osoby urodzonej po 1960")
