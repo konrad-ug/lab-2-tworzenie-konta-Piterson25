@@ -5,7 +5,7 @@ from ..Konto import Konto
 class TestCreateBankAccount(unittest.TestCase):
     imie = "Dariusz"
     nazwisko = "Januszewski"
-    pesel = "72345678912"
+    pesel = "7234567891"
     kod_rabatowy = "PROM_420"
 
     def test_tworzenie_konta(self):
