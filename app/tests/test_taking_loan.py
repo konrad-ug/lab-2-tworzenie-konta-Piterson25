@@ -42,3 +42,10 @@ class TestTakingLoan(unittest.TestCase):
         self.assertEqual(czy_przyznany, False, "Suma ostatnich 5 transakcji jest mniejsza od kredytu i ostatnie 3"
                                                "transakcje nie byly wplatami")
         self.assertEqual(konto.saldo, 0, "Srodki zostaly powiekszone a nie powinny")
+
+    def test_krotka_historia(self):
+        konto = Konto(self.imie, self.nazwisko, self.pesel)
+        konto.historia = [-700, -500, 100, 100]
+        czy_przyznany = konto.zaciagnij_kredyt(500)
+        self.assertEqual(czy_przyznany, False, "Historia jest dluzsza niz 4")
+        self.assertEqual(konto.saldo, 0, "Srodki zostaly powiekszone a nie powinny")
