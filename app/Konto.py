@@ -43,3 +43,9 @@ class Konto:
             self.saldo -= kwota + oplata
             self.historia.append(-kwota)
             self.historia.append(-oplata)
+
+    def zaciagnij_kredyt(self, kwota):
+        if all(p > 0 for p in self.historia[-3:]) and sum(self.historia[-5:]) > kwota:
+            self.zaksieguj_przelew_przychodzacy(kwota)
+            return True
+        return False
