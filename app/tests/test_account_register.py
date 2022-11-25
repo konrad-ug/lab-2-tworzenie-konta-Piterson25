@@ -17,12 +17,17 @@ class TestAccountRegister(unittest.TestCase):
         konto = RejestrKont.find_account(peselek)
         self.assertEqual(konto.pesel, peselek)
 
-    def test_2_dodawanie_drugiego_konta(self):
+    def test_2_znajdz_nieistniejace_konto(self):
+        peselek = "12345678910"
+        konto = RejestrKont.find_account(peselek)
+        self.assertEqual(konto, None)
+
+    def test_3_dodawanie_drugiego_konta(self):
         konto = Konto(self.imie, self.nazwisko, self.pesel)
         RejestrKont.add_account(konto)
         self.assertEqual(RejestrKont.accounts(), 2)
 
-    def test_3_dodawanie_trzeciego_konta(self):
+    def test_4_dodawanie_trzeciego_konta(self):
         konto = Konto(self.imie, self.nazwisko, self.pesel)
         RejestrKont.add_account(konto)
         self.assertEqual(RejestrKont.accounts(), 3)
