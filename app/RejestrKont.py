@@ -24,4 +24,5 @@ class RejestrKont():
         for k in cls.konta:
             if k.pesel == pesel:
                 cls.konta.remove(k)
-                break
+                return True
+        return False

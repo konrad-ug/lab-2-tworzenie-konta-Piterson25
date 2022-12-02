@@ -7,6 +7,7 @@ import requests
 # python3 -m flask run
 # odpalanie testu
 # python3 -m unittest api_tests/test_obsluga_kont.py
+# python -m coverage run -m unittest
 
 class TestObslugaKont(unittest.TestCase):
     body = {
@@ -38,7 +39,7 @@ class TestObslugaKont(unittest.TestCase):
         resp_body = create_resp.json()
         self.assertEqual(resp_body["error"], "Konto z tym peselem juz istnieje")
 
-    def test_3_get_po_peselu(self):
+    def test_3_odczyt_konta(self):
         get_resp = requests.get(self.url + f"/konta/konto/{self.body['pesel']}")
         self.assertEqual(get_resp.status_code, 200)
         resp_body = get_resp.json()
@@ -46,7 +47,7 @@ class TestObslugaKont(unittest.TestCase):
         self.assertEqual(resp_body["nazwisko"], self.body["nazwisko"])
         self.assertEqual(resp_body["saldo"], 0)
 
-    def test_4_put_po_peselu(self):
+    def test_4_aktualizacja_konta(self):
         put_resp = requests.put(self.url + f"/konta/konto/{self.body['pesel']}", json=self.body2)
         self.assertEqual(put_resp.status_code, 200)
         resp_body = put_resp.json()
@@ -54,6 +55,10 @@ class TestObslugaKont(unittest.TestCase):
         self.assertEqual(resp_body["nazwisko"], "marley")
         self.assertEqual(resp_body["pesel"], "01292909876")
 
-    def test_5_delete_po_peselu(self):
+    def test_5_usuniecie_konta(self):
         delete_resp = requests.delete(self.url + f"/konta/delete/{self.body['pesel']}")
         self.assertEqual(delete_resp.status_code, 200)
+
+    def test_6_usuniecie_nieistniejacego_konta(self):
+        delete_resp = requests.delete(self.url + f"/konta/delete/{self.body['pesel']}")
+        self.assertEqual(delete_resp.status_code, 404)

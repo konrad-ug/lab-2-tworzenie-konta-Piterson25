@@ -44,6 +44,7 @@ def aktualizuj_konto(pesel):
 
 @app.route("/konta/delete/<pesel>", methods=['DELETE'])
 def delete(pesel):
-    konto = RejestrKont.find_account(pesel)
-    RejestrKont.delete(konto)
-    return jsonify("Konto zostalo usuniete"), 200
+    if RejestrKont.delete(pesel):
+        return jsonify("Konto zostalo usuniete"), 200
+    else:
+        return jsonify({"error": "Konto z tym peselem nie istnieje"}), 404
