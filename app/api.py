@@ -9,8 +9,8 @@ app = Flask(__name__)
 def stworz_konto():
     dane = request.get_json()
     print(f"Request o stworzenie konta z danymi: {dane}")
-    if RejestrKont.find_account(dane["pesel"]):
-        return jsonify("Konto z podanym peselem juz istnieje"), 400
+    if RejestrKont.find_account(dane["pesel"]) is not None:
+        return jsonify({"error": "Konto z tym peselem juz istnieje"}), 400
     else:
         konto = Konto(dane["imie"], dane["nazwisko"], dane["pesel"])
         RejestrKont.add_account(konto)
@@ -46,4 +46,4 @@ def aktualizuj_konto(pesel):
 def delete(pesel):
     konto = RejestrKont.find_account(pesel)
     RejestrKont.delete(konto)
-    return jsonify("Konto zostalo usuniete"), 201
+    return jsonify("Konto zostalo usuniete"), 200

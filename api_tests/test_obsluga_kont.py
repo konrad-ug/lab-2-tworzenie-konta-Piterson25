@@ -35,6 +35,8 @@ class TestObslugaKont(unittest.TestCase):
     def test_2_tworzenie_istniejacego_konta(self):
         create_resp = requests.post(self.url + "/konta/stworz_konto", json=self.body_false)
         self.assertEqual(create_resp.status_code, 400)
+        resp_body = create_resp.json()
+        self.assertEqual(resp_body["error"], "Konto z tym peselem juz istnieje")
 
     def test_3_get_po_peselu(self):
         get_resp = requests.get(self.url + f"/konta/konto/{self.body['pesel']}")
@@ -54,4 +56,4 @@ class TestObslugaKont(unittest.TestCase):
 
     def test_5_delete_po_peselu(self):
         delete_resp = requests.delete(self.url + f"/konta/delete/{self.body['pesel']}")
-        self.assertEqual(delete_resp.status_code, 201)
+        self.assertEqual(delete_resp.status_code, 200)
