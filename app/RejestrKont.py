@@ -18,3 +18,10 @@ class RejestrKont():
     @classmethod
     def accounts(cls):
         return len(cls.konta)
+
+    @classmethod
+    def delete(cls, pesel):
+        for k in cls.konta:
+            if k.pesel == pesel:
+                cls.konta.remove(k)
+                break
