@@ -32,6 +32,16 @@ class TestAccountRegister(unittest.TestCase):
         RejestrKont.add_account(konto)
         self.assertEqual(RejestrKont.accounts(), 3)
 
+    def test_5_usuwanie_konta(self):
+        usuniete = RejestrKont.delete(self.pesel)
+        self.assertEqual(usuniete, True)
+
+        RejestrKont.konta = []
+        usuniete = RejestrKont.delete(self.pesel)
+        self.assertIsNone(usuniete)
+
+
     @classmethod
     def tearDownClass(cls):
         RejestrKont.konta = []
+
