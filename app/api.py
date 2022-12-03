@@ -42,9 +42,10 @@ def aktualizuj_konto(pesel):
     return jsonify(imie=konto.imie, nazwisko=konto.nazwisko, pesel=konto.pesel, saldo=konto.saldo), 200
 
 
-@app.route("/konta/delete/<pesel>", methods=['DELETE'])
+@app.route("/konta/konto/<pesel>", methods=['DELETE'])
 def delete(pesel):
     if RejestrKont.delete(pesel):
         return jsonify("Konto zostalo usuniete"), 200
     else:
-        return jsonify({"error": "Konto z tym peselem nie istnieje"}), 404
+        return jsonify("Nie ma takiego konta"), 404
+

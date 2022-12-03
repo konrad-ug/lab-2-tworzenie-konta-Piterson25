@@ -1,7 +1,7 @@
 from app.Konto import Konto
 
 
-class RejestrKont():
+class RejestrKont:
     konta = []
 
     @classmethod
@@ -21,8 +21,8 @@ class RejestrKont():
 
     @classmethod
     def delete(cls, pesel):
-        for k in cls.konta:
-            if k.pesel == pesel:
-                cls.konta.remove(k)
-                return True
-        return False
+        konto = cls.find_account(pesel)
+        if konto:
+            cls.konta.remove(konto)
+            return True
+        return None

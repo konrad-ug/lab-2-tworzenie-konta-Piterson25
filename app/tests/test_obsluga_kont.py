@@ -6,7 +6,7 @@ import requests
 # export FLASK_APP=app/api.py
 # python3 -m flask run
 # odpalanie testu
-# python3 -m unittest api_tests/test_obsluga_kont.py
+# python3 -m unittest app/tests/test_obsluga_kont.py
 # python -m coverage run -m unittest
 
 class TestObslugaKont(unittest.TestCase):
@@ -56,7 +56,7 @@ class TestObslugaKont(unittest.TestCase):
         self.assertEqual(resp_body["pesel"], "01292909876")
 
     def test_5_usuniecie_konta(self):
-        delete_resp = requests.delete(self.url + f"/konta/delete/{self.body['pesel']}")
+        delete_resp = requests.delete(self.url + f"/konta/konto/{self.body['pesel']}")
         self.assertEqual(delete_resp.status_code, 200)
 
     def test_6_usuniecie_nieistniejacego_konta(self):
