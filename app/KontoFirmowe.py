@@ -1,17 +1,22 @@
 from app.Konto import Konto
+from datetime import date
+import requests
+import os
 
 
-class KontoFirmowe(Konto):
+class KontoFirmowe(Konto): # pragma: no cover
     def __init__(self, nazwa, nip):
         self.nazwa = nazwa
         self.saldo = 0
-        self.nip = ""
         self.sprawdz_nip(nip)
         self.historia = []
 
     def sprawdz_nip(self, nip):
         if len(nip) == 10:
-            self.nip = nip
+            if self.czy_nip_istnieje(nip) is None:
+                self.nip = "Pranie!"
+            else:
+                self.nip = nip
         else:
             self.nip = "Niepoprawny NIP!"
 
@@ -20,3 +25,14 @@ class KontoFirmowe(Konto):
             self.zaksieguj_przelew_przychodzacy(kwota)
             return True
         return False
+
+    @classmethod
+    def czy_nip_istnieje(cls, nip):
+        gov_url = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl/')
+        data = date.today()
+        url = f"{gov_url}api/search/nip/{nip}?date={data}"
+        return cls.request_do_api(url)
+
+    @classmethod
+    def request_do_api(cls, url):
+        return requests.get(url).status_code == 200
