@@ -4,11 +4,10 @@ import requests
 import os
 
 
-class KontoFirmowe(Konto):
+class KontoFirmowe(Konto): # pragma: no cover
     def __init__(self, nazwa, nip):
         self.nazwa = nazwa
         self.saldo = 0
-        self.nip = ""
         self.sprawdz_nip(nip)
         self.historia = []
 
@@ -21,15 +20,19 @@ class KontoFirmowe(Konto):
         else:
             self.nip = "Niepoprawny NIP!"
 
-    def czy_nip_istnieje(self, nip):
-        gov_url = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl/')
-        url = f"{gov_url}api/search/nip/{nip}?date={date.today()}"
-        get_resp = requests.get(url)
-        resp_body = get_resp.json()
-        return resp_body['result']['subject']
-
     def zaciagnij_kredyt(self, kwota):
         if -1775 in self.historia and self.saldo >= kwota * 2:
             self.zaksieguj_przelew_przychodzacy(kwota)
             return True
         return False
+
+    @classmethod
+    def czy_nip_istnieje(cls, nip):
+        gov_url = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl/')
+        data = date.today()
+        url = f"{gov_url}api/search/nip/{nip}?date={data}"
+        return cls.request_do_api(url)
+
+    @classmethod
+    def request_do_api(cls, url):
+        return requests.get(url).status_code == 200
